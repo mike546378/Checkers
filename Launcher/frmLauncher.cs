@@ -35,7 +35,7 @@ namespace Graded_Unit_Launcher
         //Launches single player game
         private void lblSinglePlayer_Click(object sender, EventArgs e)
         {
-            launch(new String[] {"GameType", "SP" });
+            launch(new String[] {"GameType=SP" });
         }
 
         //Launches game with given parameters
@@ -44,6 +44,10 @@ namespace Graded_Unit_Launcher
             String arguments = "";
             foreach (String s in args) //Building program parameters into string
                 arguments += " --" + s;
+
+            //Position args
+            arguments += "--Left=" + this.Location.X;
+            arguments += "--Left=" + this.Location.Y;
 
             //Creating new process, adding filename and args, starting process
             Process Checkers = new Process();
@@ -56,10 +60,10 @@ namespace Graded_Unit_Launcher
         //Launches 2 player game
         private void lbl2Player_Click(object sender, EventArgs e)
         {
-            launch(new String[] { "GameType=", "MP" });
+            launch(new String[] { "GameType=LMP" });
         }
 
-        //Connects to server for multiplayer game
+        //Connects to server for online multiplayer game
         private void lblMultiplayer_Click(object sender, EventArgs e)
         {
             pnlMultiplayer.Visible = true;
