@@ -20,6 +20,7 @@ namespace Checkers
         BoardManager manager; //Reference back to the boardmanager
         BoardTile location;
         Team team;
+        public bool highlighted;
 
         //Initilization through constructor
         public checkerPiece(BoardManager man, checkerPiece.Team team)
@@ -94,9 +95,11 @@ namespace Checkers
 
         //Gets all avaliable moves for the piece
         private List<BoardTile> moves;
+        private List<BoardTile> jumpMoves;
         public List<BoardTile> getMoves()
         {
             moves = new List<BoardTile>();
+            jumpMoves = new List<BoardTile>();
             BoardTile tile;
             if (team == Team.DARK)
             {
@@ -109,6 +112,13 @@ namespace Checkers
             }
 
             return moves;
+        }
+
+        //Gets all avaliable jumpMoves for the piece
+        public List<BoardTile> getJumpMoves()
+        {
+            getMoves();
+            return jumpMoves;
         }
 
         //Checks for avaliable moves in specified x & y direction (THIS SHOULD ALWAYS BE +- 1)
@@ -128,7 +138,7 @@ namespace Checkers
                     {
                         if (manager.getTile(location.getX() + xDir*2, location.getY() + yDir*2) != null) //Tile past enemy exists
                             if (!manager.getTileContainsPiece(manager.getTile(location.getX() + xDir * 2, location.getY() + yDir * 2))) //Tile past enemy empty
-                                moves.Add(manager.getTile(location.getX() + xDir * 2, location.getY() + yDir * 2));
+                                jumpMoves.Add(manager.getTile(location.getX() + xDir * 2, location.getY() + yDir * 2));
                     }
                 }
 
