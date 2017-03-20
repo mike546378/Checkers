@@ -29,10 +29,12 @@ namespace Checkers
             team = t;
             playerType = PlayerType.Human;
             manager = m;
+            highlightAvaliablePieces(false);
         }
 
 
         //Highlights all avaliable moves
+        public void highlightAvaliablePieces(bool jumpOnly)
         {
             List<checkerPiece> avaliableMoves = new List<checkerPiece>();       //Pieces with avaliable regular moves
             List<checkerPiece> avaliableJumpMoves = new List<checkerPiece>();   //Pieces with avaliable jump moves
@@ -46,6 +48,7 @@ namespace Checkers
             }
 
             //Highlight any piece with a jump move avaliable
+            if (avaliableJumpMoves.Count > 0 && !jumpOnly)
             {
                 foreach (checkerPiece piece in avaliableJumpMoves)
                     piece.highlight();
