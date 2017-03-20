@@ -12,7 +12,7 @@ namespace Checkers
     class BoardManager
     {
         //2D array of PictureBoxes to store the board pieces
-        BoardTile[,] board = new BoardTile[10, 10];
+        BoardTile[,] board = new BoardTile[8, 8];
         Panel pnlBoard;
         Checkers form;
         List<checkerPiece> pieces = new List<checkerPiece>();
@@ -32,13 +32,13 @@ namespace Checkers
             pnlBoard = new DoubleBufferedPanel();
             form.Controls.Add(pnlBoard);
             pnlBoard.SuspendLayout();
-            Boolean color = false;
+            Boolean color = true;
             Image black = Resources.Tile_Dark;
             Image white = Resources.Tile_White;
 
-            for (int y = 0; y < 10; y++)
+            for (int y = 0; y < 8; y++)
             {
-                for (int x = 0; x < 10; x++)
+                for (int x = 0; x < 8; x++)
                 {
                     board[x, y] = new BoardTile(x,y);
                     board[x, y].Size = new System.Drawing.Size(45, 45);
@@ -62,18 +62,18 @@ namespace Checkers
             int width = Convert.ToInt32(form.ClientSize.Width * 0.9);
 
             if (height < width) { width = height; } else { height = width; }
-            pnlBoard.Size = new Size(Convert.ToInt32((width / 10) * 10), Convert.ToInt32((height / 10) * 10)); //Small hack to ensure panel size is exactly correct for 10x10 board pieces
+            pnlBoard.Size = new Size(Convert.ToInt32((width / 8) * 8), Convert.ToInt32((height / 8) * 8)); //Small hack to ensure panel size is exactly correct for 10x10 board pieces
             pnlBoard.Location = new Point((form.ClientSize.Width - pnlBoard.ClientSize.Width) / 2, Convert.ToInt32(((form.ClientSize.Height - pnlBoard.Height)) / 2));
-            for (int y = 0; y < 10; y++)
-                for (int x = 0; x < 10; x++)
+            for (int y = 0; y < 8; y++)
+                for (int x = 0; x < 8; x++)
                 {
-                    board[x, y].Size = new Size(Convert.ToInt32(pnlBoard.Width / 10), Convert.ToInt32(pnlBoard.Height / 10));
-                    board[x, y].Location = new Point(Convert.ToInt32(pnlBoard.Width / 10) * x, Convert.ToInt32(pnlBoard.Height / 10) * y);
+                    board[x, y].Size = new Size(Convert.ToInt32(pnlBoard.Width / 8), Convert.ToInt32(pnlBoard.Height / 8));
+                    board[x, y].Location = new Point(Convert.ToInt32(pnlBoard.Width / 8) * x, Convert.ToInt32(pnlBoard.Height / 8) * y);
                 }
 
             foreach (checkerPiece piece in pieces)
             {
-                piece.setSize(Convert.ToInt32(pnlBoard.Width / 10), Convert.ToInt32(pnlBoard.Width / 10));
+                piece.setSize(Convert.ToInt32(pnlBoard.Width / 8), Convert.ToInt32(pnlBoard.Width / 8));
                 piece.updateLoc();
             }
         }
@@ -97,22 +97,22 @@ namespace Checkers
         public void populateBoard()
         {
             pnlBoard.SuspendLayout();
-            for (int y = 0; y < 2; y++)
-                for (int x = 0; x < 5; x++)
+            for (int y = 0; y < 3; y++)
+                for (int x = 0; x < 4; x++)
                 {
                     checkerPiece piece = new checkerPiece(this, checkerPiece.Team.WHITE);
-                    piece.move(getTile(x*2, y));
+                    piece.move(getTile(x*2+1, y));
                     if (y==1) //Offsetting by 1 pos on x-axis
-                        piece.move(getTile(x*2+1, y));
+                        piece.move(getTile(x*2, y));
                     pieces.Add(piece);
                 }
 
-            for (int y = 8; y < 10; y++)
-                for (int x = 0; x < 5; x++)
+            for (int y = 5; y < 8; y++)
+                for (int x = 0; x < 4; x++)
                 {
                     checkerPiece piece = new checkerPiece(this, checkerPiece.Team.DARK);
                     piece.move(getTile(x*2, y));
-                    if(y==9) //Offsetting by 1 pos on x-axis
+                    if(y==6) //Offsetting by 1 pos on x-axis
                         piece.move(getTile(x*2+1, y));
                     pieces.Add(piece);
                 }

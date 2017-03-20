@@ -37,9 +37,9 @@
             // 
             this.picTable.BackgroundImage = global::Checkers.Properties.Resources.TableTop1;
             this.picTable.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picTable.Location = new System.Drawing.Point(116, 42);
+            this.picTable.Location = new System.Drawing.Point(305, 42);
             this.picTable.Name = "picTable";
-            this.picTable.Size = new System.Drawing.Size(302, 395);
+            this.picTable.Size = new System.Drawing.Size(113, 175);
             this.picTable.TabIndex = 0;
             this.picTable.TabStop = false;
             // 
@@ -55,6 +55,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(540, 540);
             this.Name = "Checkers";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Checkers";
             this.Resize += new System.EventHandler(this.Checkers_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.picTable)).EndInit();

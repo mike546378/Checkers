@@ -36,15 +36,74 @@ namespace Checkers
 
         //Instance of BoardManager handles all interactions with the board
         BoardManager board;
+        GameType gameType = GameType.Unset;
+
+        //Different game types
+        public enum GameType
+        {
+            Unset = 0,
+            SinglePlayer = 1,
+            LocalMultiplayer = 2,
+            OnlineMultiplayer = 3,
+        }
 
         //Initilization through constructor
         public Checkers(string[] args)
         {
-            InitializeComponent();
+            InitializeComponent();            
             board = new BoardManager(this);
             picTable.SendToBack();
             updatePicTableLocation();
+            parseArgs(args);
+            if (gameType == GameType.Unset) //Exit application and return to launcher if no GameType was specified
+           {
+                System.Diagnostics.Process.Start("Launcher.exe");
+                this.Close();
+                return;
+            }
+        }
 
+
+        //Decyphers command line arguments and takes action on them
+        public void parseArgs(string[] args)
+        {
+            foreach (String arg in args)
+            {
+                switch (getArgComponent(arg).ToLower())
+                {
+                   
+                    case "--gametype":    //Setting the game type
+                        switch (getArgValue(arg).ToUpper())
+                        {
+                            case "LMP":
+                                gameType = GameType.LocalMultiplayer;
+                                break;
+                            case "SP":
+                                gameType = GameType.SinglePlayer;
+                                break;
+                            case "OMP":
+                                gameType = GameType.OnlineMultiplayer;
+                                break;
+                        }
+                        break;
+
+                    case "--left":    //Setting screen location
+                        this.Location = new Point(Convert.ToInt32(getArgValue(arg)), this.Location.Y);
+                        break;
+                    case "--top":    //Setting screen location
+                        this.Location = new Point(this.Location.X, Convert.ToInt32(getArgValue(arg)));
+                        break;
+                }
+            }
+        }
+        private String getArgValue(String arg) { //Gets value of an argument
+            String a = arg.Substring(arg.IndexOf("=") + 1);
+            return a;
+        }
+        private String getArgComponent(String arg)
+        { //Gets value of an argument
+            String a = arg.Substring(0,arg.IndexOf("="));
+            return a;
         }
 
         //Redraw board when window resized

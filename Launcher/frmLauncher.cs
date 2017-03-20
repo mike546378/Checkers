@@ -46,8 +46,8 @@ namespace Graded_Unit_Launcher
                 arguments += " --" + s;
 
             //Position args
-            arguments += "--Left=" + this.Location.X;
-            arguments += "--Left=" + this.Location.Y;
+            arguments += " --Left=" + this.Location.X;
+            arguments += " --Top=" + this.Location.Y;
 
             //Creating new process, adding filename and args, starting process
             Process Checkers = new Process();

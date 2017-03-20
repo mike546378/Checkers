@@ -16,7 +16,7 @@ namespace Checkers
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Checkers(args));
+            try { Application.Run(new Checkers(args)); } catch (Exception) { }
         }
     }
 }
