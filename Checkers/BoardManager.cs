@@ -13,6 +13,7 @@ namespace Checkers
     {
         //2D array of PictureBoxes to store the board pieces
         BoardTile[,] board = new BoardTile[8, 8];
+        checkerPiece.Team turn = checkerPiece.Team.WHITE;
         Panel pnlBoard;
         Checkers form;
         List<checkerPiece> pieces = new List<checkerPiece>();
@@ -23,7 +24,31 @@ namespace Checkers
             form = sender;
             createBoard();
             populateBoard();
-            players.Add(new Player(checkerPiece.Team.WHITE, this));
+        }
+
+
+        //Creats player objects based on game type
+        public void createPlayers(String gameID, checkerPiece.Team team)
+        {
+            checkerPiece.Team enemyTeam = checkerPiece.Team.WHITE;
+            if (team == enemyTeam)
+                enemyTeam = checkerPiece.Team.DARK;
+
+            switch (form.getGameType())
+            {
+                case Checkers.GameType.SinglePlayer:
+                    players.Add(new Player(team, this, Player.PlayerType.Human));
+                    players.Add(new Player_AI(enemyTeam, this, Player.PlayerType.AI));
+                    break;
+                case Checkers.GameType.LocalMultiplayer:
+                    players.Add(new Player(team, this, Player.PlayerType.Human));
+                    players.Add(new Player(enemyTeam, this, Player.PlayerType.Human));
+                    break;
+                case Checkers.GameType.OnlineMultiplayer:
+                    players.Add(new Player(team, this, Player.PlayerType.Human));
+                    players.Add(new Player(enemyTeam, this, Player.PlayerType.Remote));
+                    break;
+            }
         }
 
         //Creates the boards layout
@@ -40,7 +65,7 @@ namespace Checkers
             {
                 for (int x = 0; x < 8; x++)
                 {
-                    board[x, y] = new BoardTile(x,y);
+                    board[x, y] = new BoardTile(this, x,y);
                     board[x, y].Size = new System.Drawing.Size(45, 45);
                     board[x, y].AutoSize = false;
                     if (color) { board[x, y].BackgroundImage = black; } else { board[x, y].BackgroundImage = white; }
@@ -55,6 +80,25 @@ namespace Checkers
         }
 
 
+        //Moves onto the next players turn
+        public void nextTurn()
+        {
+            foreach (checkerPiece piece in pieces)
+            {
+                piece.clearHighlight();
+            }
+            if (turn == checkerPiece.Team.WHITE)
+            {
+                turn = checkerPiece.Team.DARK;
+                updateStatus("Blacks Turn");
+            }
+            else {
+                turn = checkerPiece.Team.WHITE;
+                updateStatus("Whites Turn");
+            }
+            if (players[0].getTeam() == turn) { players[0].startTurn(); } else { players[1].startTurn(); }
+        }
+            
         //Repositions and resizes all elements of the board
         public void redrawBoard()
         {
@@ -93,6 +137,25 @@ namespace Checkers
             }
         }
 
+
+        //Adds new piece to gameplay
+        public void addPiece(checkerPiece.Team team, BoardTile tile)
+        {
+            checkerPiece piece = new checkerPiece(this, team);
+            piece.move(tile);
+            this.pieces.Add(piece);
+        }
+
+        //Adds new king to gameplay
+        public void addKing(checkerPiece.Team team, BoardTile tile)
+        {
+            checkerPiece piece = new checkerPieceKing(this, team);
+            piece.move(tile);
+            this.getActivePlayer().setSelected(piece);
+            this.pieces.Add(piece);
+            this.redrawBoard();
+        }
+
         //Method creates initial checkers pieces
         public void populateBoard()
         {
@@ -121,6 +184,94 @@ namespace Checkers
             pnlBoard.ResumeLayout();
         }
 
+        //Fired from click event on highlighted tile
+        public void moveRequest(BoardTile tile)
+        {
+            bool hasJumped = false;
+            if (this.getActivePlayer().getSelected().getJumpMoves().Contains(tile)) {   //Calculate the tile that was jumped over
+                hasJumped = true;
+                int jumpedX;
+                int jumpedY;
+                if (this.getActivePlayer().getSelected().getTile().getY() > tile.getY()) { //If moving up
+                    jumpedY = tile.getY() + 1;
+                }
+                else {
+                    jumpedY = tile.getY() - 1;
+                }
+                if (this.getActivePlayer().getSelected().getTile().getX() > tile.getX())
+                {
+                    jumpedX = tile.getX() + 1;
+                }
+                else
+                {
+                    jumpedX = tile.getX() - 1;
+                }
+                this.getCheckerPiece(this.getTile(jumpedX, jumpedY)).remove();
+            }            
+            this.getActivePlayer().getSelected().move(tile);
+            this.clearHighlightedTiles();
+
+            if (this.getActivePlayer().getSelected().type == checkerPiece.Type.REGULAR) //Upgrade to king if reached end of board
+                if (this.getActivePlayer().getSelected().getTile().getY() == 7 && this.getActivePlayer().getSelected().getTeam() == checkerPiece.Team.WHITE)
+                {
+                    this.getActivePlayer().getSelected().upgrade();
+                }
+                else if (this.getActivePlayer().getSelected().getTile().getY() == 0 && this.getActivePlayer().getSelected().getTeam() == checkerPiece.Team.DARK)
+                {
+                    this.getActivePlayer().getSelected().upgrade(); ;
+                }
+
+
+            if (hasJumped && this.getActivePlayer().getSelected().getJumpMoves().Count > 0) //If another jump avaliable after initial jump
+            {
+                this.getActivePlayer().getSelected().highlight();
+                foreach (BoardTile jmpTile in this.getActivePlayer().getSelected().getJumpMoves())
+                    jmpTile.highlight(true);
+            }
+            else {
+                nextTurn();
+            }
+            
+        }
+
+
+        //Removes a checker piece from gameplay
+        public void removePiece(checkerPiece piece)
+        {
+            pieces.Remove(piece);
+            this.redrawBoard();
+        }
+
+        //Returns the current turn
+        public checkerPiece.Team getTurn()
+        {
+            return turn;
+        }
+
+
+        //Returns the current player
+        public Player getActivePlayer()
+        {
+            Player player = null;
+            foreach (Player p in players)
+            {
+                if (p.getTeam() == turn) {
+                    player = p;
+                    break;
+                }
+            }
+            return player;
+        }
+
+
+        //Clears highlighting on tiles
+        public void clearHighlightedTiles()
+        {
+            foreach (BoardTile tile in board)
+            {
+                tile.highlight(false);
+            }
+        }
 
         //Checks if a tile contains a checker piece
         public Boolean getTileContainsPiece(BoardTile tile)
@@ -171,6 +322,12 @@ namespace Checkers
                 if (piece.getTeam() == team)
                     validPieces.Add(piece);
             return validPieces;
+        }
+
+        //Updates form title
+        public void updateStatus(String status)
+        {
+            form.Text = "Checkers - " + status;
         }
     }
 }

@@ -57,6 +57,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="checkerPiece.cs" />
+    <Compile Include="checkerPieceKing.cs" />
     <Compile Include="Checkers.cs">
       <SubType>Form</SubType>
     </Compile>

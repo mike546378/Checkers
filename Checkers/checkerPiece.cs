@@ -16,15 +16,22 @@ namespace Checkers
             WHITE = 2,
         }
 
-        PictureBox piece = new PictureBox(); //The checker piece is represented by a pictureBox
+        protected PictureBox piece = new PictureBox(); //The checker piece is represented by a pictureBox
         BoardManager manager; //Reference back to the boardmanager
         BoardTile location;
-        Team team;
+        protected Team team;
         public bool highlighted;
+        public Type type;
+        public enum Type
+        {
+            REGULAR = 1,
+            KING = 2,
+        }
 
         //Initilization through constructor
         public checkerPiece(BoardManager man, checkerPiece.Team team)
         {
+
             manager = man;
             this.team = team;
             if (team == Team.DARK)
@@ -37,6 +44,7 @@ namespace Checkers
             piece.BackgroundImageLayout = ImageLayout.Stretch;
             piece.Click += new EventHandler(piece_Click);
             manager.getBoard().Controls.Add(piece);
+            this.type = Type.REGULAR;
             piece.BringToFront();
         }
 
@@ -49,7 +57,7 @@ namespace Checkers
 
 
         //Highlights the piece indicating it can be moved
-        public void highlight()
+        virtual public void highlight()
         {
             if (team == Team.DARK){
                 piece.BackgroundImage = Resources.DarkChecker_Highlighted;
@@ -61,7 +69,7 @@ namespace Checkers
 
 
         //Clears the highlighting
-        public void clearHighlight()
+        virtual public void clearHighlight()
         {
             if (team == Team.DARK)
             {
@@ -104,9 +112,9 @@ namespace Checkers
         }
 
         //Gets all avaliable moves for the piece
-        private List<BoardTile> moves;
-        private List<BoardTile> jumpMoves;
-        public List<BoardTile> getMoves()
+        protected List<BoardTile> moves;
+        protected List<BoardTile> jumpMoves;
+        virtual public List<BoardTile> getMoves()
         {
             moves = new List<BoardTile>();
             jumpMoves = new List<BoardTile>();
@@ -132,7 +140,7 @@ namespace Checkers
         }
 
         //Checks for avaliable moves in specified x & y direction (THIS SHOULD ALWAYS BE +- 1)
-        private void checkMove(int xDir, int yDir)
+        protected void checkMove(int xDir, int yDir)
         {
             BoardTile tile;
             tile = manager.getTile(location.getX() + xDir, location.getY() + yDir);
@@ -176,6 +184,20 @@ namespace Checkers
         public BoardTile getTile()
         {
             return location;
+        }
+
+
+        //Returns the PictureBox of the piece
+        public PictureBox getPiece()
+        {
+            return piece;
+        }
+
+        //Upgrades piece to a king
+        public void upgrade()
+        {
+            manager.addKing(team, location);
+            remove();
         }
     }
 }
