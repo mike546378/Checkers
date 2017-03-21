@@ -11,10 +11,10 @@ namespace Checkers
     {
 
 
-        private checkerPiece.Team team;
-        private PlayerType playerType;
-        private BoardManager manager;
-        private checkerPiece selectedPiece;
+        protected checkerPiece.Team team;
+        protected PlayerType playerType;
+        protected BoardManager manager;
+        protected checkerPiece selectedPiece;
 
         public enum PlayerType
         {
@@ -25,10 +25,10 @@ namespace Checkers
 
 
         //Initilization through constructor
-        public Player(checkerPiece.Team team, BoardManager manager, PlayerType playerType)
+        public Player(checkerPiece.Team team, BoardManager manager)
         {
             this.team = team;
-            this.playerType = playerType;
+            this.playerType = PlayerType.Human;
             this.manager = manager;
         }
 
@@ -76,7 +76,7 @@ namespace Checkers
         }
 
         //Attempts to move a piece to a given location
-        public Boolean move(checkerPiece piece, BoardTile location)
+        virtual public Boolean move(checkerPiece piece, BoardTile location)
         {
             if (piece.getTeam() != team || location == null)
                 return false;
@@ -85,13 +85,13 @@ namespace Checkers
         }
 
         //Initiates players turn
-        public void startTurn()
+        virtual public void startTurn()
         {
             highlightAvaliablePieces(false);
         }
 
         //Ends players turn
-        public void endTurn()
+        virtual public void endTurn()
         {
             manager.nextTurn();
         }

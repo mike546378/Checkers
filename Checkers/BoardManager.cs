@@ -37,16 +37,16 @@ namespace Checkers
             switch (form.getGameType())
             {
                 case Checkers.GameType.SinglePlayer:
-                    players.Add(new Player(team, this, Player.PlayerType.Human));
-                    players.Add(new Player_AI(enemyTeam, this, Player.PlayerType.AI));
+                    players.Add(new Player(team, this));
+                    players.Add(new Player_AI(enemyTeam, this));
                     break;
                 case Checkers.GameType.LocalMultiplayer:
-                    players.Add(new Player(team, this, Player.PlayerType.Human));
-                    players.Add(new Player(enemyTeam, this, Player.PlayerType.Human));
+                    players.Add(new Player(team, this));
+                    players.Add(new Player(enemyTeam, this));
                     break;
                 case Checkers.GameType.OnlineMultiplayer:
-                    players.Add(new Player(team, this, Player.PlayerType.Human));
-                    players.Add(new Player(enemyTeam, this, Player.PlayerType.Remote));
+                    players.Add(new Player(team, this));
+                    players.Add(new Player(enemyTeam, this));
                     break;
             }
         }
@@ -190,37 +190,11 @@ namespace Checkers
             bool hasJumped = false;
             if (this.getActivePlayer().getSelected().getJumpMoves().Contains(tile)) {   //Calculate the tile that was jumped over
                 hasJumped = true;
-                int jumpedX;
-                int jumpedY;
-                if (this.getActivePlayer().getSelected().getTile().getY() > tile.getY()) { //If moving up
-                    jumpedY = tile.getY() + 1;
-                }
-                else {
-                    jumpedY = tile.getY() - 1;
-                }
-                if (this.getActivePlayer().getSelected().getTile().getX() > tile.getX())
-                {
-                    jumpedX = tile.getX() + 1;
-                }
-                else
-                {
-                    jumpedX = tile.getX() - 1;
-                }
-                this.getCheckerPiece(this.getTile(jumpedX, jumpedY)).remove();
+                removeJumped(this.getActivePlayer().getSelected().getTile(), tile);
             }            
             this.getActivePlayer().getSelected().move(tile);
             this.clearHighlightedTiles();
-
-            if (this.getActivePlayer().getSelected().type == checkerPiece.Type.REGULAR) //Upgrade to king if reached end of board
-                if (this.getActivePlayer().getSelected().getTile().getY() == 7 && this.getActivePlayer().getSelected().getTeam() == checkerPiece.Team.WHITE)
-                {
-                    this.getActivePlayer().getSelected().upgrade();
-                }
-                else if (this.getActivePlayer().getSelected().getTile().getY() == 0 && this.getActivePlayer().getSelected().getTeam() == checkerPiece.Team.DARK)
-                {
-                    this.getActivePlayer().getSelected().upgrade(); ;
-                }
-
+            upgradeCheck(); //Check if piece should be upgraded to king
 
             if (hasJumped && this.getActivePlayer().getSelected().getJumpMoves().Count > 0) //If another jump avaliable after initial jump
             {
@@ -234,6 +208,43 @@ namespace Checkers
             
         }
 
+        //Calculate and remove tile that was jumped over
+        public void removeJumped(BoardTile originalTile, BoardTile newTile)
+        {
+            int jumpedX;
+            int jumpedY;
+            if (originalTile.getY() > newTile.getY())
+            {
+                jumpedY = newTile.getY() + 1;
+            }
+            else
+            {
+                jumpedY = newTile.getY() - 1;
+            }
+            if (originalTile.getX() > newTile.getX())
+            {
+                jumpedX = newTile.getX() + 1;
+            }
+            else
+            {
+                jumpedX = newTile.getX() - 1;
+            }
+            this.getCheckerPiece(this.getTile(jumpedX, jumpedY)).remove();
+        }
+
+        //Check if piece should be upgraded to king
+        public void upgradeCheck()
+        {
+            if (this.getActivePlayer().getSelected().type == checkerPiece.Type.REGULAR) //Upgrade to king if reached end of board
+                if (this.getActivePlayer().getSelected().getTile().getY() == 7 && this.getActivePlayer().getSelected().getTeam() == checkerPiece.Team.WHITE)
+                {
+                    this.getActivePlayer().getSelected().upgrade();
+                }
+                else if (this.getActivePlayer().getSelected().getTile().getY() == 0 && this.getActivePlayer().getSelected().getTeam() == checkerPiece.Team.DARK)
+                {
+                    this.getActivePlayer().getSelected().upgrade(); ;
+                }
+        }
 
         //Removes a checker piece from gameplay
         public void removePiece(checkerPiece piece)
