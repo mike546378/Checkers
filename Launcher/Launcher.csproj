@@ -34,6 +34,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Launch|AnyCPU'">
     <OutputPath>bin\Launch\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SPLaunch|AnyCPU'">
+    <OutputPath>bin\SPLaunch\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />

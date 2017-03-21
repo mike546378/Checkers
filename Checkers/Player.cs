@@ -14,6 +14,7 @@ namespace Checkers
         private checkerPiece.Team team;
         private PlayerType playerType;
         private BoardManager manager;
+        private checkerPiece selectedPiece;
 
         public enum PlayerType
         {
@@ -24,14 +25,27 @@ namespace Checkers
 
 
         //Initilization through constructor
-        public Player(checkerPiece.Team t, BoardManager m)
+        public Player(checkerPiece.Team team, BoardManager manager, PlayerType playerType)
         {
-            team = t;
-            playerType = PlayerType.Human;
-            manager = m;
-            highlightAvaliablePieces(false);
+            this.team = team;
+            this.playerType = playerType;
+            this.manager = manager;
         }
 
+
+        //Get/Set selected piece
+        public checkerPiece getSelected()
+        { return selectedPiece; }
+        public void setSelected(checkerPiece piece)
+        { selectedPiece = piece; }
+
+
+        //Clears all highlighted pieces
+        public void clearHighlights()
+        {
+            foreach (checkerPiece piece in manager.getAllPieces())
+                piece.clearHighlight();
+        }
 
         //Highlights all avaliable moves
         public void highlightAvaliablePieces(bool jumpOnly)
@@ -73,13 +87,19 @@ namespace Checkers
         //Initiates players turn
         public void startTurn()
         {
-
+            highlightAvaliablePieces(false);
         }
 
         //Ends players turn
         public void endTurn()
         {
+            manager.nextTurn();
+        }
 
+        //Returns players team
+        public checkerPiece.Team getTeam()
+        {
+            return team;
         }
     }
 }

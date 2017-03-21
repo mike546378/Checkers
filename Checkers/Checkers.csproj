@@ -35,6 +35,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Launch|AnyCPU'">
     <OutputPath>..\Launcher\bin\Launch\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SPLaunch|AnyCPU'">
+    <OutputPath>bin\SPLaunch\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -64,6 +67,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Player.cs" />
+    <Compile Include="Player_AI.cs" />
+    <Compile Include="Player_Remote.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Checkers.resx">

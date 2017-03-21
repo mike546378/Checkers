@@ -56,6 +56,7 @@ namespace Checkers
             }else {
                 piece.BackgroundImage = Resources.lightChecker_Highlighted;
             }
+            highlighted = true;
         }
 
 
@@ -64,12 +65,13 @@ namespace Checkers
         {
             if (team == Team.DARK)
             {
-                piece.BackgroundImage = Resources.DarkChecker1;
+                piece.BackgroundImage = Resources.DarkChecker;
             }
             else
             {
-                piece.BackgroundImage = Resources.lightChecker1;
+               piece.BackgroundImage = Resources.lightChecker;
             }
+            highlighted = false;
         }
 
         //Method retreives the team associated with the piece
@@ -92,6 +94,14 @@ namespace Checkers
                 piece.Location = location.Location;
         }
 
+        //Removes piece from play
+        public void remove()
+        {
+            piece.BackgroundImage = Resources.Tile_White;
+            piece.Visible = false;
+            piece.SendToBack();
+            manager.removePiece(this);
+        }
 
         //Gets all avaliable moves for the piece
         private List<BoardTile> moves;
@@ -147,8 +157,19 @@ namespace Checkers
 
         //Event handler for clicking of piece
         public void piece_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Click");
+        { 
+            manager.clearHighlightedTiles();
+            if (this.highlighted && this.getTeam() == manager.getTurn())
+            {
+                manager.getActivePlayer().setSelected(this);
+                getMoves(); // Required to reset the jump moves
+                List<BoardTile> moves = this.getJumpMoves();
+                if (moves.Count == 0)
+                    moves = this.getMoves();
+                foreach (BoardTile tile in moves)
+                    tile.highlight(true);
+            }
+
         }
 
         //Returns the tile that the piece is on

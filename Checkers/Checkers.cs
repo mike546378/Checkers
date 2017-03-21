@@ -37,6 +37,8 @@ namespace Checkers
         //Instance of BoardManager handles all interactions with the board
         BoardManager board;
         GameType gameType = GameType.Unset;
+        String gameID = null;
+        String team = null;
 
         //Different game types
         public enum GameType
@@ -61,8 +63,16 @@ namespace Checkers
                 this.Close();
                 return;
             }
+            board.createPlayers(null, checkerPiece.Team.DARK);
+            board.nextTurn();
         }
 
+
+        //Return gameType
+        public GameType getGameType()
+        {
+            return gameType;
+        }
 
         //Decyphers command line arguments and takes action on them
         public void parseArgs(string[] args)
