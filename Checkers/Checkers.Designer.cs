@@ -30,7 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Checkers));
             this.picTable = new System.Windows.Forms.PictureBox();
+            this.picSplashScreen = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.picTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picSplashScreen)).BeginInit();
             this.SuspendLayout();
             // 
             // picTable
@@ -43,6 +45,17 @@
             this.picTable.TabIndex = 0;
             this.picTable.TabStop = false;
             // 
+            // picSplashScreen
+            // 
+            this.picSplashScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picSplashScreen.Location = new System.Drawing.Point(32, 325);
+            this.picSplashScreen.Name = "picSplashScreen";
+            this.picSplashScreen.Size = new System.Drawing.Size(303, 164);
+            this.picSplashScreen.TabIndex = 1;
+            this.picSplashScreen.TabStop = false;
+            this.picSplashScreen.Visible = false;
+            this.picSplashScreen.Click += new System.EventHandler(this.picSplashScreen_Click);
+            // 
             // Checkers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -50,6 +63,7 @@
             this.BackgroundImage = global::Checkers.Properties.Resources.grass;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(524, 501);
+            this.Controls.Add(this.picSplashScreen);
             this.Controls.Add(this.picTable);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -59,6 +73,7 @@
             this.Text = "Checkers";
             this.Resize += new System.EventHandler(this.Checkers_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.picTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picSplashScreen)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -66,6 +81,7 @@
         #endregion
 
         private System.Windows.Forms.PictureBox picTable;
+        private System.Windows.Forms.PictureBox picSplashScreen;
     }
 }
 

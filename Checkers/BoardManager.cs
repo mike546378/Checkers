@@ -83,10 +83,30 @@ namespace Checkers
         //Moves onto the next players turn
         public void nextTurn()
         {
+            bool BlackPiecesLeft = false;
+            bool WhitePiecesLeft = false;
             foreach (checkerPiece piece in pieces)
             {
                 piece.clearHighlight();
+                if (piece.getTeam() == checkerPiece.Team.DARK)
+                    BlackPiecesLeft = true;
+                if (piece.getTeam() == checkerPiece.Team.WHITE)
+                    WhitePiecesLeft = true;
+
             }
+
+            if (getAllPieces(checkerPiece.Team.DARK).Count == 0 || getAllPieces(checkerPiece.Team.DARK).Count == 0)
+            {
+                if (getActivePlayer().getPlayerType() == Player.PlayerType.Human)
+                {
+                    this.endGame(true);
+                }
+                else {
+                    this.endGame(false);
+                }    
+                return;
+            }
+
             if (turn == checkerPiece.Team.WHITE)
             {
                 turn = checkerPiece.Team.DARK;
@@ -98,7 +118,8 @@ namespace Checkers
             }
             if (players[0].getTeam() == turn) { players[0].startTurn(); } else { players[1].startTurn(); }
         }
-            
+
+
         //Repositions and resizes all elements of the board
         public void redrawBoard()
         {
@@ -339,6 +360,19 @@ namespace Checkers
         public void updateStatus(String status)
         {
             form.Text = "Checkers - " + status;
+        }
+
+        //Cleans up and ends the game, true if you won the game
+        public void endGame(bool won)
+        {
+            checkerPiece.Team winner = getActivePlayer().getTeam();
+            if (form.getGameType() != Checkers.GameType.LocalMultiplayer)
+                if (!won)
+                {
+                    form.displaySplashScreen(Checkers.SplashType.LOOSE_SCREEN);
+                    return;
+                }
+            form.displaySplashScreen(Checkers.SplashType.WIN_SCREEN);
         }
     }
 }

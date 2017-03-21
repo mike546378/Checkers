@@ -43,11 +43,11 @@ namespace Graded_Unit_Launcher
         {
             String arguments = "";
             foreach (String s in args) //Building program parameters into string
-                arguments += " --" + s;
+                arguments += "--" + s + " ";
 
             //Position args
-            arguments += " --Left=" + this.Location.X;
-            arguments += " --Top=" + this.Location.Y;
+            arguments += "--Left=" + this.Location.X + " ";
+            arguments += "--Top=" + this.Location.Y + " ";
 
             //Creating new process, adding filename and args, starting process
             Process Checkers = new Process();

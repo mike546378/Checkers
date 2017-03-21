@@ -40,6 +40,13 @@ namespace Checkers
                 }
 
 
+                //End game if no pieces left
+                if (this.selectedPiece == null)
+                {
+                    manager.endGame(true);
+                    return;
+                }
+
                 //Select random move from whats avaliable
                 if (this.selectedPiece.getJumpMoves().Count > 0)
                 {
@@ -53,7 +60,13 @@ namespace Checkers
                 }
                 else
                 {
-                    move(selectedPiece, randomMove(selectedPiece.getMoves()));
+                    BoardTile toMove = randomMove(selectedPiece.getMoves());
+                    if (toMove == null)
+                    {
+                        manager.endGame(true);
+                        return;
+                    }
+                    move(selectedPiece, toMove);
                     manager.upgradeCheck();
                     break;
                 }
@@ -64,15 +77,21 @@ namespace Checkers
         //Select random tile to move to from given list
         private BoardTile randomMove(List<BoardTile> moves)
         {
-            Random rnd = new Random();
-            return moves[rnd.Next(0, moves.Count - 1)];
+            try
+            {
+                Random rnd = new Random();
+                return moves[rnd.Next(0, moves.Count - 1)];
+            }
+            catch { return null; }
         }
 
         //Select random piece from avaliable pieces
         private checkerPiece randomPiece(List<checkerPiece> pieceList)
         {
-            Random rnd = new Random();
-            return pieceList[rnd.Next(0,pieceList.Count-1)];
+            try {
+                Random rnd = new Random();
+                return pieceList[rnd.Next(0, pieceList.Count - 1)];
+            }catch{ return null; }
         }
     }
 }

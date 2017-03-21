@@ -8,6 +8,6 @@ namespace Checkers
 {
     class Player_Remote : Player
     {
-        public Player_Remote(checkerPiece.Team team, BoardManager manager, PlayerType playerType) : base(team, manager, playerType){}
+        public Player_Remote(checkerPiece.Team team, BoardManager manager) : base(team, manager){}
     }
 }

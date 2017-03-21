@@ -32,6 +32,11 @@ namespace Checkers
             this.manager = manager;
         }
 
+        //Returns the type of player
+        public PlayerType getPlayerType()
+        {
+            return playerType;
+        }
 
         //Get/Set selected piece
         public checkerPiece getSelected()
@@ -73,6 +78,7 @@ namespace Checkers
             foreach (checkerPiece piece in avaliableMoves)
                 piece.highlight();
 
+            if (avaliableMoves.Count == 0 && avaliableJumpMoves.Count == 0) manager.endGame(false);
         }
 
         //Attempts to move a piece to a given location

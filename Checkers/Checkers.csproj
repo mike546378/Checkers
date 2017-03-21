@@ -34,6 +34,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Launch|AnyCPU'">
     <OutputPath>..\Launcher\bin\Launch\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SPLaunch|AnyCPU'">
     <OutputPath>bin\SPLaunch\</OutputPath>
@@ -119,6 +123,10 @@
     <None Include="Resources\Tile_White_Highlighted.png" />
     <None Include="Resources\TableTop.jpg" />
     <None Include="Resources\TableTop.png" />
+    <None Include="Resources\splashscreen_disconnected.png" />
+    <None Include="Resources\splashscreen_lost.png" />
+    <None Include="Resources\splashscreen_waiting.png" />
+    <None Include="Resources\splashscreen_win.png" />
     <Content Include="settings.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

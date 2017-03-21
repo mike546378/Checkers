@@ -52,13 +52,13 @@ namespace Checkers
         //Initilization through constructor
         public Checkers(string[] args)
         {
-            InitializeComponent();            
+            InitializeComponent();
             board = new BoardManager(this);
             picTable.SendToBack();
             updatePicTableLocation();
             parseArgs(args);
             if (gameType == GameType.Unset) //Exit application and return to launcher if no GameType was specified
-           {
+            {
                 System.Diagnostics.Process.Start("Launcher.exe");
                 this.Close();
                 return;
@@ -81,7 +81,7 @@ namespace Checkers
             {
                 switch (getArgComponent(arg).ToLower())
                 {
-                   
+
                     case "--gametype":    //Setting the game type
                         switch (getArgValue(arg).ToUpper())
                         {
@@ -106,13 +106,14 @@ namespace Checkers
                 }
             }
         }
-        private String getArgValue(String arg) { //Gets value of an argument
+        private String getArgValue(String arg)
+        { //Gets value of an argument
             String a = arg.Substring(arg.IndexOf("=") + 1);
             return a;
         }
         private String getArgComponent(String arg)
         { //Gets value of an argument
-            String a = arg.Substring(0,arg.IndexOf("="));
+            String a = arg.Substring(0, arg.IndexOf("="));
             return a;
         }
 
@@ -128,6 +129,53 @@ namespace Checkers
         {
             picTable.Location = new Point(board.getBoard().Location.X - 30, 0);
             picTable.Size = new Size(board.getBoard().Size.Width + 60, this.ClientSize.Height);
+            picSplashScreen.Size = new Size(board.getBoard().Size.Width - 120, Convert.ToInt32((board.getBoard().Size.Width - 120) * 0.375));
+            picSplashScreen.Location = new Point(board.getBoard().Location.X + 60, this.ClientSize.Height / 2 - picSplashScreen.Height / 2);
+        }
+
+        private SplashType currentSplash;
+        public enum SplashType
+        {
+            WIN_SCREEN = 1,
+            LOOSE_SCREEN = 2,
+            WAITING = 3,
+            DISCONNECTED = 4,
+        }
+        public void displaySplashScreen(SplashType type)
+        {
+            currentSplash = type;
+            switch (type)
+            {
+                case SplashType.DISCONNECTED:
+                    picSplashScreen.BackgroundImage = Resources.splashscreen_disconnected;
+                    break;
+                case SplashType.LOOSE_SCREEN:
+                    picSplashScreen.BackgroundImage = Resources.splashscreen_lost;
+                    break;
+                case SplashType.WAITING:
+                    picSplashScreen.BackgroundImage = Resources.splashscreen_waiting;
+                    break;
+                case SplashType.WIN_SCREEN:
+                    picSplashScreen.BackgroundImage = Resources.splashscreen_win;
+                    break;
+            }
+            picSplashScreen.BringToFront();
+            picSplashScreen.Visible = true;          
+        }
+
+        public void hideSplashScreen()
+        {
+            picSplashScreen.Visible = false;
+        }
+
+        private void picSplashScreen_Click(object sender, EventArgs e)
+        {
+            if (currentSplash != SplashType.WAITING)
+            {
+                System.Diagnostics.Process.Start("Launcher.exe");
+                Application.Exit();
+                this.Close();
+            }
         }
     }
 }

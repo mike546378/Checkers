@@ -130,25 +130,28 @@
   <data name="grass" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\grass1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DarkChecker_Highlighted" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DarkChecker_Highlighted.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="lightChecker1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lightChecker.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="lightCheckerKing" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\lightCheckerKing.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="lightChecker_Highlighted" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lightChecker_Highlighted.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Tile_White" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Tile_White.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DarkChecker" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DarkChecker.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="lightCheckerKing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lightCheckerKing.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="lightChecker_Highlighted" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\lightChecker_Highlighted.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TableTop1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TableTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="lightCheckerKing_Highlighted" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\lightCheckerKing_Highlighted.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DarkChecker1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DarkChecker.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DarkChecker" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DarkChecker.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DarkCheckerKing1" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -160,8 +163,8 @@
   <data name="lightChecker" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\lightChecker.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="lightChecker1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\lightChecker.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="DarkChecker_Highlighted" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DarkChecker_Highlighted.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TableTop" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TableTop.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -169,7 +172,16 @@
   <data name="Tile_Dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Tile_Dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TableTop1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TableTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="splashscreen_disconnected" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\splashscreen_disconnected.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="splashscreen_lost" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\splashscreen_lost.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="splashscreen_waiting" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\splashscreen_waiting.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="splashscreen_win" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\splashscreen_win.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
