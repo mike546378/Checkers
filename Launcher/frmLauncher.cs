@@ -39,7 +39,7 @@ namespace Graded_Unit_Launcher
         }
 
         //Launches game with given parameters
-        private void launch(String[] args)
+        public void launch(String[] args)
         {
             String arguments = "";
             foreach (String s in args) //Building program parameters into string
@@ -48,12 +48,12 @@ namespace Graded_Unit_Launcher
             //Position args
             arguments += "--Left=" + this.Location.X + " ";
             arguments += "--Top=" + this.Location.Y + " ";
-
+            Console.WriteLine("Starting game with arguments:" + arguments);
             //Creating new process, adding filename and args, starting process
             Process Checkers = new Process();
             Checkers.StartInfo.FileName = "Checkers.exe";
             Checkers.StartInfo.Arguments = arguments;
-            Checkers.Start();
+            //Checkers.Start();
             Application.Exit();
         }
 

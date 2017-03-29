@@ -21,7 +21,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Launcher\bin\Debug\Checkers.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -41,6 +43,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SPLaunch|AnyCPU'">
     <OutputPath>bin\SPLaunch\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -71,6 +76,7 @@
     <Compile Include="DoubleBufferedPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Multiplayer.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Player_AI.cs" />
     <Compile Include="Player_Remote.cs" />
@@ -112,21 +118,51 @@
     <Resource Include="Resources\Tile_Dark.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <None Include="Resources\DarkChecker.png" />
-    <None Include="Resources\DarkChecker_Highlighted.png" />
-    <None Include="Resources\DarkCheckerKing.png" />
-    <None Include="Resources\DarkCheckerKing_Highlighted.png" />
-    <None Include="Resources\lightChecker.png" />
-    <None Include="Resources\lightChecker_Highlighted.png" />
-    <None Include="Resources\lightCheckerKing.png" />
-    <None Include="Resources\lightCheckerKing_Highlighted.png" />
-    <None Include="Resources\Tile_White_Highlighted.png" />
-    <None Include="Resources\TableTop.jpg" />
-    <None Include="Resources\TableTop.png" />
-    <None Include="Resources\splashscreen_disconnected.png" />
-    <None Include="Resources\splashscreen_lost.png" />
-    <None Include="Resources\splashscreen_waiting.png" />
-    <None Include="Resources\splashscreen_win.png" />
+    <None Include="Resources\DarkChecker.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\DarkChecker_Highlighted.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\DarkCheckerKing.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\DarkCheckerKing_Highlighted.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\lightChecker.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\lightChecker_Highlighted.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\lightCheckerKing.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\lightCheckerKing_Highlighted.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Tile_White_Highlighted.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\TableTop.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\TableTop.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\splashscreen_disconnected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\splashscreen_lost.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\splashscreen_waiting.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\splashscreen_win.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="settings.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

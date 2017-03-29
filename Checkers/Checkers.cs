@@ -31,14 +31,16 @@ namespace Checkers
      *          /,_/      '`-'
      */
 
-    public partial class Checkers : Form
+    partial class Checkers : Form
     {
 
-        //Instance of BoardManager handles all interactions with the board
-        BoardManager board;
-        GameType gameType = GameType.Unset;
-        String gameID = null;
-        String team = null;
+        
+        BoardManager board;                 //Instance of BoardManager handles all interactions with the board
+        GameType gameType = GameType.Unset; //Determines the game type for player initilization  in boardmanager
+        checkerPiece.Team team;              //Preferred starting team
+        String gameID = null;              //Game UUID for multiplayer connectivity
+        String ip = null;                     //Game ip for multiplayer connectivity
+        String port = null;                   //Game port for multiplayer connectivity
 
         //Different game types
         public enum GameType
@@ -52,21 +54,38 @@ namespace Checkers
         //Initilization through constructor
         public Checkers(string[] args)
         {
-            InitializeComponent();
-            board = new BoardManager(this);
-            picTable.SendToBack();
-            updatePicTableLocation();
-            parseArgs(args);
-            if (gameType == GameType.Unset) //Exit application and return to launcher if no GameType was specified
+            try
             {
-                System.Diagnostics.Process.Start("Launcher.exe");
-                this.Close();
-                return;
+                InitializeComponent();
+                board = new BoardManager(this);
+                picTable.SendToBack();
+                updatePicTableLocation();
+                team = checkerPiece.Team.DARK;
+                board.updateStatus("Parsing Args");
+                parseArgs(args);
+                //Exit application and return to launcher if arguments are not valid
+                if (gameType == GameType.Unset || (gameType == GameType.OnlineMultiplayer && (ip == null || port == null || gameID == null)))
+                {
+                    System.Diagnostics.Process.Start("Launcher.exe");
+                    this.Close();
+                    return;
+                }
+                board.updateStatus("Creating players");
+                board.createPlayers(null, team);
+                if (gameType != GameType.OnlineMultiplayer)
+                    board.startGame();
             }
-            board.createPlayers(null, checkerPiece.Team.DARK);
-            board.nextTurn();
+            catch (Exception ex)
+            {
+                Console.Write(ex.StackTrace);
+            }
         }
 
+        //Returns the team
+        public checkerPiece.Team getTeam()
+        {
+            return this.team;
+        }
 
         //Return gameType
         public GameType getGameType()
@@ -79,6 +98,7 @@ namespace Checkers
         {
             foreach (String arg in args)
             {
+                Console.WriteLine(arg);
                 switch (getArgComponent(arg).ToLower())
                 {
 
@@ -102,6 +122,19 @@ namespace Checkers
                         break;
                     case "--top":    //Setting screen location
                         this.Location = new Point(this.Location.X, Convert.ToInt32(getArgValue(arg)));
+                        break;
+                    case "--connect": //Game UUID
+                        this.gameID = getArgValue(arg);
+                        break;
+                    case "--ip": //Game IP
+                        this.ip = getArgValue(arg);
+                        break;
+                    case "--port": //Game Port
+                        this.port = getArgValue(arg);
+                        break;
+                    case "--team": //Preferred team
+                        if (!getArgValue(arg).ToLower().Equals("dark"))
+                            this.team = checkerPiece.Team.WHITE;
                         break;
                 }
             }
@@ -129,8 +162,8 @@ namespace Checkers
         {
             picTable.Location = new Point(board.getBoard().Location.X - 30, 0);
             picTable.Size = new Size(board.getBoard().Size.Width + 60, this.ClientSize.Height);
-            picSplashScreen.Size = new Size(board.getBoard().Size.Width - 120, Convert.ToInt32((board.getBoard().Size.Width - 120) * 0.375));
-            picSplashScreen.Location = new Point(board.getBoard().Location.X + 60, this.ClientSize.Height / 2 - picSplashScreen.Height / 2);
+            picSplashScreen.Size = new Size(board.getBoard().Size.Width - 160, Convert.ToInt32((board.getBoard().Size.Width - 160) * 0.375));
+            picSplashScreen.Location = new Point(board.getBoard().Location.X + 80, this.ClientSize.Height / 2 - picSplashScreen.Height / 2);
         }
 
         private SplashType currentSplash;
@@ -163,11 +196,14 @@ namespace Checkers
             picSplashScreen.Visible = true;          
         }
 
+        //Hides the splashscreen
         public void hideSplashScreen()
         {
             picSplashScreen.Visible = false;
         }
 
+
+        //Shows splashscreen
         private void picSplashScreen_Click(object sender, EventArgs e)
         {
             if (currentSplash != SplashType.WAITING)
@@ -176,6 +212,20 @@ namespace Checkers
                 Application.Exit();
                 this.Close();
             }
+        }
+
+        //Getters for multiplayer params
+        public String getIP()
+        {
+            return ip;
+        }
+        public String getPort()
+        {
+            return port;
+        }
+        public String getID()
+        {
+            return gameID;
         }
     }
 }

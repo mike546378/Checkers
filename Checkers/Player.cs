@@ -67,7 +67,7 @@ namespace Checkers
             }
 
             //Highlight any piece with a jump move avaliable
-            if (avaliableJumpMoves.Count > 0 && !jumpOnly)
+            if (avaliableJumpMoves.Count > 0)
             {
                 foreach (checkerPiece piece in avaliableJumpMoves)
                     piece.highlight();
@@ -93,12 +93,14 @@ namespace Checkers
         //Initiates players turn
         virtual public void startTurn()
         {
+            clearHighlights();
             highlightAvaliablePieces(false);
         }
 
         //Ends players turn
         virtual public void endTurn()
         {
+            clearHighlights();
             manager.nextTurn();
         }
 
@@ -106,6 +108,12 @@ namespace Checkers
         public checkerPiece.Team getTeam()
         {
             return team;
+        }
+
+        //Returns the manager
+        public BoardManager getManager()
+        {
+            return manager;
         }
     }
 }

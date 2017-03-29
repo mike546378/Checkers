@@ -33,6 +33,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Launch|AnyCPU'">
     <OutputPath>bin\Launch\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SPLaunch|AnyCPU'">
     <OutputPath>bin\SPLaunch\</OutputPath>

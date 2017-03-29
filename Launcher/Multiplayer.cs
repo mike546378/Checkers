@@ -18,6 +18,7 @@ namespace Graded_Unit_Launcher
         private System.Windows.Forms.Label status;
         private Socket client;
         private Thread receiveWorker;
+        private String team;
 
         //Initilization of server connection
         public Multiplayer(System.Windows.Forms.Label status)
@@ -70,13 +71,24 @@ namespace Graded_Unit_Launcher
                             String msg = Encoding.ASCII.GetString(bytes, 0, bytesRec);
                             if (msg.Contains("CKSHND`")) //Callsign to ensure message is ment for this program
                             {
-                                msg = msg.Substring(7); //Remove callsign
-                                if (msg.ToLower().Equals("connected")) //Parse messages
+                                foreach (String m in msg.Split(new String[] { "|ET|" }, StringSplitOptions.RemoveEmptyEntries))
                                 {
-                                    updateStatus("Connected, Waiting for opponent");
+                                    Console.WriteLine(m);
+                                    String tmp = m;
+                                    tmp = tmp.Substring(7); //Remove callsign
+                                    if (tmp.ToLower().Equals("connected")) //Parse messages
+                                    {
+                                        updateStatus("Connected, Waiting for opponent");
+                                    }
+                                    if (tmp.Contains("team="))
+                                        this.team = tmp;
+                                    if (tmp.Contains("connect="))
+                                    {
+                                        new frmLauncher().launch(new String[] { "GameType=OMP", team, "ip=" + ip, "port=" + port, tmp });
+                                        this.closeConnection();
+                                    }
                                 }
                             }
-                            Console.WriteLine(msg);
                         }
                         else
                         {
@@ -105,7 +117,7 @@ namespace Graded_Unit_Launcher
         //Thread-safe method to update status label
         private void updateStatus(String msg)
         {
-            this.status.BeginInvoke((MethodInvoker)delegate () { this.status.Text = msg; ; });
+            this.status.BeginInvoke((MethodInvoker)delegate () { this.status.Text = msg; });
         }
     }
 }

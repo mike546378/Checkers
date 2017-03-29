@@ -13,7 +13,7 @@ namespace Checkers
     {
         //2D array of PictureBoxes to store the board pieces
         BoardTile[,] board = new BoardTile[8, 8];
-        checkerPiece.Team turn = checkerPiece.Team.WHITE;
+        checkerPiece.Team turn = checkerPiece.Team.DARK;
         Panel pnlBoard;
         Checkers form;
         List<checkerPiece> pieces = new List<checkerPiece>();
@@ -22,7 +22,9 @@ namespace Checkers
         public BoardManager(Checkers sender)
         {
             form = sender;
+            updateStatus("Creating Board");
             createBoard();
+            updateStatus("Populating Board");
             populateBoard();
         }
 
@@ -33,7 +35,6 @@ namespace Checkers
             checkerPiece.Team enemyTeam = checkerPiece.Team.WHITE;
             if (team == enemyTeam)
                 enemyTeam = checkerPiece.Team.DARK;
-
             switch (form.getGameType())
             {
                 case Checkers.GameType.SinglePlayer:
@@ -46,7 +47,7 @@ namespace Checkers
                     break;
                 case Checkers.GameType.OnlineMultiplayer:
                     players.Add(new Player(team, this));
-                    players.Add(new Player(enemyTeam, this));
+                    players.Add(new Player_Remote(enemyTeam, this));
                     break;
             }
         }
@@ -83,18 +84,7 @@ namespace Checkers
         //Moves onto the next players turn
         public void nextTurn()
         {
-            bool BlackPiecesLeft = false;
-            bool WhitePiecesLeft = false;
-            foreach (checkerPiece piece in pieces)
-            {
-                piece.clearHighlight();
-                if (piece.getTeam() == checkerPiece.Team.DARK)
-                    BlackPiecesLeft = true;
-                if (piece.getTeam() == checkerPiece.Team.WHITE)
-                    WhitePiecesLeft = true;
-
-            }
-
+            //Checks if any player is out of moves
             if (getAllPieces(checkerPiece.Team.DARK).Count == 0 || getAllPieces(checkerPiece.Team.DARK).Count == 0)
             {
                 if (getActivePlayer().getPlayerType() == Player.PlayerType.Human)
@@ -119,6 +109,18 @@ namespace Checkers
             if (players[0].getTeam() == turn) { players[0].startTurn(); } else { players[1].startTurn(); }
         }
 
+
+        //Sequence to start the game
+        public void startGame()
+        {
+            this.updateStatus("Starting Game");
+            Player activePlayer = this.getActivePlayer();
+            if (activePlayer.getPlayerType() != Player.PlayerType.Remote)
+            {
+                activePlayer.startTurn();
+                this.updateStatus("Starting Turn");
+            }
+        }
 
         //Repositions and resizes all elements of the board
         public void redrawBoard()
@@ -154,6 +156,7 @@ namespace Checkers
             }
             catch (Exception ex)
             {
+                Console.WriteLine("tile does not exist");
                 return null;
             }
         }
@@ -212,7 +215,14 @@ namespace Checkers
             if (this.getActivePlayer().getSelected().getJumpMoves().Contains(tile)) {   //Calculate the tile that was jumped over
                 hasJumped = true;
                 removeJumped(this.getActivePlayer().getSelected().getTile(), tile);
-            }            
+            }
+
+            if (this.getInactivePlayer().getPlayerType() == Player.PlayerType.Remote)
+            {
+                Player_Remote player = (Player_Remote)this.getInactivePlayer();
+                player.sendMove(this.getActivePlayer().getSelected(), tile);
+
+            }
             this.getActivePlayer().getSelected().move(tile);
             this.clearHighlightedTiles();
             upgradeCheck(); //Check if piece should be upgraded to king
@@ -227,6 +237,14 @@ namespace Checkers
                 nextTurn();
             }
             
+        }
+
+        //Return enemy player
+        public Player getInactivePlayer()
+        {
+            if (players[0] == this.getActivePlayer())
+                return players[1];
+            return players[0];
         }
 
         //Calculate and remove tile that was jumped over
@@ -358,8 +376,8 @@ namespace Checkers
 
         //Updates form title
         public void updateStatus(String status)
-        {
-            form.Text = "Checkers - " + status;
+        {          
+            //form.BeginInvoke((MethodInvoker)delegate () { form.Text = "Checkers - " + status; });
         }
 
         //Cleans up and ends the game, true if you won the game
