@@ -112,14 +112,17 @@ namespace Checkers
                                             Console.WriteLine("Connected, Waiting for opponent");
                                             break;
                                         case "status=waiting":  //States that you are wating on the other client
-                                            //player.getManager().getForm().displaySplashScreen(Checkers.SplashType.WAITING);
+                                            player.getManager().getForm().displaySplashScreen(Checkers.SplashType.WAITING);
                                             break;
                                         case "status=start":    //Starts the game
                                             player.getManager().startGame();
-                                            //player.getManager().getForm().hideSplashScreen();
+                                            player.getManager().getForm().hideSplashScreen();
                                             break;
                                         case "nextturn":    //Ends remote players turn, moves onto local players turn
                                             player.getManager().nextTurn();
+                                            break;
+                                        case "disconnect":
+                                            player.getManager().getForm().displaySplashScreen(Checkers.SplashType.DISCONNECTED);
                                             break;
                                     }
                                     if (input.ToLower().Contains("move="))  //Moves a specified piece from one location to another
@@ -129,6 +132,25 @@ namespace Checkers
                                         int[] oldCoords = Array.ConvertAll(coords[0].Split(','), s => int.Parse(s)); //Retrieve old coords as int array
                                         int[] newCoords = Array.ConvertAll(coords[1].Split(','), s => int.Parse(s)); //Retrieve old coords as int array
                                         player.move(oldCoords, newCoords);
+                                    }
+                                    else if (input.ToLower().Contains("del="))  //deleted a specified piece from gameplay
+                                    {
+                                        input = input.Substring(input.IndexOf("=") + 1);
+                                        int[] coords = Array.ConvertAll(input.Split(','), s => int.Parse(s)); //parse input coords into int array
+                                        player.getManager().getCheckerPiece(player.getManager().getTile(coords[0], coords[1])).remove();
+                                    }
+                                    else if (input.ToLower().Contains("king="))  //Upgrades a specified piece to king
+                                    {
+                                        input = input.Substring(input.IndexOf("=") + 1);
+                                        int[] coords = Array.ConvertAll(input.Split(','), s => int.Parse(s)); //parse input coords into int array
+                                        player.getManager().addKing(player.getTeam(), player.getManager().getTile(coords[0], coords[1]));
+                                    }
+                                    else if (input.ToLower().Contains("end="))  //Message to end the game
+                                    {
+                                        input = input.Substring(input.IndexOf("=") + 1);
+                                        bool won = Convert.ToBoolean(input);
+                                        player.getManager().endGame(won);
+                                        this.closeConnection();
                                     }
                                 }
                                 Console.WriteLine(msg);

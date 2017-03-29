@@ -33,10 +33,35 @@ namespace Checkers
             mp.send("relay=move="+piece.getTile().getX()+","+ piece.getTile().getY()+"|"+tile.getX()+","+tile.getY());
         }
 
+        //Sends a delete message to the server
+        public void sendDel(checkerPiece piece)
+        {
+            mp.send("relay=del=" + piece.getTile().getX() + "," + piece.getTile().getY());
+        }
+
+        //Sends a upgrade message to the server
+        public void sendUpgrade(checkerPiece piece)
+        {
+            mp.send("relay=king=" + piece.getTile().getX() + "," + piece.getTile().getY());
+        }
+
         //Starts turn
         public override void startTurn(){
             this.clearHighlights();
             mp.send("relay=nextturn");
+        }
+
+        //Ends game
+        public void sendEnd(Boolean won)
+        {
+            won = !won;
+            mp.send("relay=end=" + won);
+        }
+
+        //Terminates connection to server
+        public void terminateConnection()
+        {
+            mp.closeConnection();
         }
     }
 }

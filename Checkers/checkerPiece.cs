@@ -105,6 +105,11 @@ namespace Checkers
         //Removes piece from play
         public void remove()
         {
+            if (manager.getForm().InvokeRequired)
+            {
+                manager.getForm().BeginInvoke(new Action(() => remove()));
+                return;
+            }
             piece.BackgroundImage = Resources.Tile_White;
             piece.Visible = false;
             piece.SendToBack();

@@ -84,6 +84,12 @@ namespace Checkers
         //Moves onto the next players turn
         public void nextTurn()
         {
+            if (getForm().InvokeRequired)
+            {
+                getForm().BeginInvoke(new Action(() => nextTurn()));
+                return;
+            }
+
             //Checks if any player is out of moves
             if (getAllPieces(checkerPiece.Team.DARK).Count == 0 || getAllPieces(checkerPiece.Team.DARK).Count == 0)
             {
@@ -173,6 +179,11 @@ namespace Checkers
         //Adds new king to gameplay
         public void addKing(checkerPiece.Team team, BoardTile tile)
         {
+            if (getForm().InvokeRequired)
+            {
+                getForm().BeginInvoke(new Action(() => addKing(team, tile)));
+                return;
+            }
             checkerPiece piece = new checkerPieceKing(this, team);
             piece.move(tile);
             this.getActivePlayer().setSelected(piece);
@@ -277,19 +288,49 @@ namespace Checkers
             if (this.getActivePlayer().getSelected().type == checkerPiece.Type.REGULAR) //Upgrade to king if reached end of board
                 if (this.getActivePlayer().getSelected().getTile().getY() == 7 && this.getActivePlayer().getSelected().getTeam() == checkerPiece.Team.WHITE)
                 {
-                    this.getActivePlayer().getSelected().upgrade();
+                    upgrade(this.getActivePlayer().getSelected());
                 }
                 else if (this.getActivePlayer().getSelected().getTile().getY() == 0 && this.getActivePlayer().getSelected().getTeam() == checkerPiece.Team.DARK)
                 {
-                    this.getActivePlayer().getSelected().upgrade(); ;
+                    upgrade(this.getActivePlayer().getSelected());
                 }
+        }
+
+
+        //Upgrades specified piece
+        public void upgrade(checkerPiece piece)
+        {
+            if (getForm().InvokeRequired)
+            {
+                getForm().BeginInvoke(new Action(() => upgrade(piece)));
+                return;
+            }
+            piece.upgrade();
+            if (this.getInactivePlayer().getPlayerType() == Player.PlayerType.Remote)
+            {
+                Player_Remote player = (Player_Remote)this.getInactivePlayer();
+                player.sendUpgrade(piece);
+            }
         }
 
         //Removes a checker piece from gameplay
         public void removePiece(checkerPiece piece)
         {
-            pieces.Remove(piece);
-            this.redrawBoard();
+            if (getForm().InvokeRequired)
+            {
+                getForm().BeginInvoke(new Action(() => removePiece(piece)));
+                return;
+            }
+            if (pieces.Contains(piece))
+            {
+                pieces.Remove(piece);
+                this.redrawBoard();
+                if (this.getInactivePlayer().getPlayerType() == Player.PlayerType.Remote)
+                {
+                    Player_Remote player = (Player_Remote)this.getInactivePlayer();
+                    player.sendDel(piece);
+                }
+            }      
         }
 
         //Returns the current turn
@@ -376,20 +417,40 @@ namespace Checkers
 
         //Updates form title
         public void updateStatus(String status)
-        {          
-            //form.BeginInvoke((MethodInvoker)delegate () { form.Text = "Checkers - " + status; });
+        {
+            if (this.getForm().InvokeRequired)
+            {
+                this.getForm().BeginInvoke(new Action(() => updateStatus(status)));
+                return;
+            }
+
+            form.Text = "Checkers - " + status;
         }
 
         //Cleans up and ends the game, true if you won the game
         public void endGame(bool won)
         {
+            if (getForm().InvokeRequired)   //Execute in main thread if called externally
+            {
+                getForm().BeginInvoke(new Action(() => endGame(won)));
+                return;
+            }
+
             checkerPiece.Team winner = getActivePlayer().getTeam();
-            if (form.getGameType() != Checkers.GameType.LocalMultiplayer)
+            if (form.getGameType() != Checkers.GameType.LocalMultiplayer) {
+                if (this.getInactivePlayer().getPlayerType() == Player.PlayerType.Remote)
+                {
+                    Player_Remote player = (Player_Remote)this.getInactivePlayer();
+                    player.sendEnd(won);    //Send won status to remote player
+                    player.terminateConnection();
+                }
+
                 if (!won)
                 {
-                    form.displaySplashScreen(Checkers.SplashType.LOOSE_SCREEN);
+                    form.displaySplashScreen(Checkers.SplashType.LOOSE_SCREEN); //Display splashscreen if won
                     return;
                 }
+            }
             form.displaySplashScreen(Checkers.SplashType.WIN_SCREEN);
         }
     }

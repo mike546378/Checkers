@@ -176,6 +176,12 @@ namespace Checkers
         }
         public void displaySplashScreen(SplashType type)
         {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(() => displaySplashScreen(type)));
+                return;
+            }
+
             currentSplash = type;
             switch (type)
             {
@@ -199,6 +205,12 @@ namespace Checkers
         //Hides the splashscreen
         public void hideSplashScreen()
         {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(() => hideSplashScreen()));
+                return;
+            }
+
             picSplashScreen.Visible = false;
         }
 

@@ -53,7 +53,7 @@ namespace Graded_Unit_Launcher
             Process Checkers = new Process();
             Checkers.StartInfo.FileName = "Checkers.exe";
             Checkers.StartInfo.Arguments = arguments;
-            //Checkers.Start();
+            Checkers.Start();
             Application.Exit();
         }
 
